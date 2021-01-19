@@ -9,23 +9,42 @@ import "./EightBall.css";
   App -> EightBall 
   */
 function EightBall({ answers }) {
-  const defaultAnswer = {color: "black", msg: "Think of a Question"};
+  const defaultAnswer = {color: "black", msg: "Think of a Question", red : "0", green : "0",  goldenrod : "0"};
   const [currentColor, setCurrentColor] = useState(defaultAnswer.color);
   const [currentText, setCurrentText] = useState(defaultAnswer.msg);
+  const [redCount, setRedCount] = useState(defaultAnswer.red);
+  const [greenCount, setGreenCount] = useState(defaultAnswer.green);
+  const [goldenrodCount, setGoldenrodCount] = useState(defaultAnswer.goldenrod);
+  const setColorObj = {
+    goldenrod : setGoldenrodCount,
+    goldenrodCount : goldenrodCount,
+    red: setRedCount,
+    redCount : redCount,
+    green: setGreenCount,
+    greenCount : greenCount,
+  }
+
+
   /* helper function for choosing a random message */
   function chooseRandomMessage(answers) {
     const randomIdx = Math.floor(Math.random() * answers.length);
     const answer = answers[randomIdx];
     setCurrentColor(answer.color);
     setCurrentText(answer.msg);
+    setColorObj[answer.color](Number(setColorObj[`${answer.color}Count`]++));
   }
   return (
   // setter in anon function
-    <div>
+    <div className="EightBall-container">
+        <div className="EightBall-colorCount">
+          <p className="EightBall-redCount">{redCount}</p>
+          <p className="EightBall-greenCount">{greenCount}</p>
+          <p className="EightBall-redCount">{goldenrodCount}</p>
+        </div>
         <div className="EightBall" style={{backgroundColor : currentColor}} onClick = {() => { chooseRandomMessage(answers) }}>
-    <h3 className="EightBall-text"> {currentText} </h3>
-    </div > 
-    <button onClick = {() => { chooseRandomMessage([defaultAnswer]) }}> Reset the 8ball</button>
+          <h3 className="EightBall-text"> {currentText} </h3>
+        </div > 
+        <button className="EightBall-reset" onClick = {() => { chooseRandomMessage([defaultAnswer]) }}> Reset the 8ball</button>
     </div>
 )
 
